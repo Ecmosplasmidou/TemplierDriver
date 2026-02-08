@@ -1,0 +1,195 @@
+/* --- PAGE WRAPPER --- */
+.loginPage {
+  background-color: #000;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Dégagement important pour le Header sur Desktop */
+  padding: 120px 20px 60px; 
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  box-sizing: border-box; /* Assure que le padding ne casse pas la hauteur */
+}
+
+/* --- CONTAINER PRINCIPAL --- */
+.loginContainer {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 60px 50px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  box-sizing: border-box; /* Empêche le container de sortir de l'écran */
+}
+
+/* Ligne de lumière supérieure */
+.loginContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+
+/* --- TYPOGRAPHIE --- */
+.subtitle {
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  font-size: 0.65rem;
+  color: #666;
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  color: #fff;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 45px;
+}
+
+/* --- FORMULAIRE & INPUTS --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.inputGroup {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputGroup input {
+  width: 100%; /* L'input prend toute la largeur du groupe */
+  box-sizing: border-box; /* Inclus le padding dans la largeur de 100% */
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+
+.inputGroup input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* --- ERREUR --- */
+.error {
+  color: #af313a;
+  font-size: 0.8rem;
+  text-align: center;
+  background: rgba(175, 49, 58, 0.1);
+  padding: 12px;
+  border: 1px solid rgba(175, 49, 58, 0.2);
+  box-sizing: border-box;
+}
+
+/* --- BOUTON --- */
+.submitBtn {
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  border: 1px solid #fff;
+  padding: 18px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-top: 10px;
+}
+
+.submitBtn:hover {
+  background: transparent;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- BAS DE PAGE --- */
+.toggleText {
+  color: #555;
+  text-align: center;
+  margin-top: 35px;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.toggleText span {
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 8px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.3s;
+}
+
+.toggleText span:hover {
+  color: #aaa;
+}
+
+/* --- RESPONSIVE --- */
+
+@media (max-width: 768px) {
+  .loginPage {
+    padding: 100px 15px 40px; /* Moins de padding sur tablette/mobile */
+    align-items: flex-start; /* Permet le scroll si le clavier mobile s'affiche */
+  }
+
+  .loginContainer {
+    padding: 50px 30px;
+    max-width: 100%; /* Utilise toute la largeur disponible */
+  }
+  
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loginPage {
+    padding-top: 80px;
+  }
+
+  .loginContainer {
+    padding: 40px 20px;
+    background: transparent; /* Style plus épuré sur petit mobile */
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .inputGroup input {
+    padding: 14px 15px; /* Plus compact */
+  }
+
+  .submitBtn:hover {
+    transform: none; /* Évite les bugs visuels au clic tactile */
+  }
+}

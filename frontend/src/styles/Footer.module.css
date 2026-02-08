@@ -1,0 +1,33 @@
+.footer {
+  width: 100%;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 60px 0;
+  border-top: 1px solid #1a1a1a;
+}
+
+.footer a {
+  color: white;
+  font-size: 28px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer a:hover {
+  color: #aaa;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    gap: 30px;
+    padding: 40px 0;
+  }
+  
+  .footer a {
+    font-size: 22px;
+  }
+}
