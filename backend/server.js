@@ -4,7 +4,14 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors({origin: 'https://templierdriver.com' & 'https://templierdriver.org'}));
+app.use(cors({origin: [
+  'https://templierdriver.com', 
+  'https://templierdriver.org', 
+  'https://templier-driver.vercel.app'
+],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 let SHOPIFY_ACCESS_TOKEN = null;
