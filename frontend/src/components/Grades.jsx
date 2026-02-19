@@ -43,7 +43,6 @@ const Grades = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  // Logique du palier actif
   const activeGrade = [...cardsData]
     .filter(c => userSpend >= c.threshold)
     .sort((a, b) => b.threshold - a.threshold)[0];

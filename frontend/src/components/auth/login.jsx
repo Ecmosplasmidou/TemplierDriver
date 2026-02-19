@@ -96,7 +96,7 @@ const Login = () => {
                 disabled={isLoading}
               >
                 {isLoading 
-                  ? "Traitement..." 
+                  ? "Connexion..." 
                   : (isRegister ? "Créer un compte" : "Entrer dans l'ordre")
                 }
               </button>
