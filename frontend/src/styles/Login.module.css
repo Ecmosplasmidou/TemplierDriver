@@ -193,3 +193,55 @@
     transform: none; /* Évite les bugs visuels au clic tactile */
   }
 }
+
+/* Le conteneur qui englobe l'input et l'oeil */
+.inputGroup {
+  position: relative; /* Indispensable pour que l'oeil se cale par rapport à ce bloc */
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* L'input lui-même */
+.passwordInput {
+  width: 100%;
+  padding: 12px;
+  padding-right: 45px; /* On crée un espace vide à droite pour ne pas écrire SOUS l'oeil */
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.passwordInput:focus {
+  border-color: #a18a5e; /* Ou la couleur de ton thème Templier */
+  outline: none;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 15px; /* Distance du bord droit */
+  top: 50%;
+  transform: translateY(-50%); /* Centre parfaitement à la verticale */
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  font-size: 1.1rem;
+  z-index: 10; /* S'assure qu'il est au-dessus de l'input */
+  transition: color 0.2s;
+}
+
+.eyeBtn:hover {
+  color: #333;
+}
+
+.passwordInput::-ms-reveal,
+.passwordInput::-ms-clear {
+  display: none;
+}

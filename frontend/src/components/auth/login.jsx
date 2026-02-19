@@ -4,11 +4,13 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "fire
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/Login.module.css";
 import Header from "../Header";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // État pour l'œil
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,27 +30,24 @@ const Login = () => {
     } catch (err) {
       console.error("CODE ERREUR:", err.code);
       
-      // Firebase a changé certains codes : 'auth/user-not-found' devient souvent 'auth/invalid-credential'
       if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         setError("Identifiants incorrects (vérifiez l'email ou le mot de passe).");
       } else if (err.code === 'auth/email-already-in-use') {
         setError("Cet email possède déjà un compte.");
       } else if (err.code === 'auth/weak-password') {
         setError("Le mot de passe doit contenir au moins 6 caractères.");
-      } else if (err.code === 'auth/operation-not-allowed') {
-        setError("L'inscription par email n'est pas encore activée dans la console Firebase.");
       } else {
-        setError("Erreur : " + err.code); // Affiche le code brut pour débugger
+        setError("Erreur : " + err.code);
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Switcher entre login et register nettoie l'erreur
   const toggleMode = () => {
     setIsRegister(!isRegister);
     setError("");
+    setShowPassword(false); // Reset de l'œil quand on change de mode
   };
 
   return (
@@ -63,6 +62,7 @@ const Login = () => {
             </h2>
             
             <form onSubmit={handleAuth} className={styles.form}>
+              {/* CHAMP EMAIL */}
               <div className={styles.inputGroup}>
                 <input 
                   type="email" 
@@ -73,15 +73,26 @@ const Login = () => {
                   autoComplete="email"
                 />
               </div>
+
+              {/* CHAMP MOT DE PASSE AVEC OEIL INTEGRÉ */}
               <div className={styles.inputGroup}>
                 <input 
-                  type="password" 
+                  type={showPassword ? "text" : "password"} 
                   placeholder="Mot de passe" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required 
                   autoComplete={isRegister ? "new-password" : "current-password"}
+                  className={styles.passwordInput}
                 />
+                <button 
+                  type="button" 
+                  className={styles.eyeBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
               
               {error && (
