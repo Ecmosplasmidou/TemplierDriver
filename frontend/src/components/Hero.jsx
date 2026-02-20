@@ -27,10 +27,8 @@ const Hero = () => {
                 Achetez maintenant
               </Link>
           </div>
+          <PushSlide /> 
         </div>
-      </section>
-      <section className={styles.pushSection}>
-        <PushSlide /> 
       </section>
       <Manifeste />
       <Footer />

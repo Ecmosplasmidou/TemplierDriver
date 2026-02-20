@@ -81,8 +81,8 @@
 
 .loginButton {
   background: transparent;
-  color: #ff8c00;
-  border: 1px solid #ff8c00;
+  color: black;
+  border: 1px solid #ffff;
   padding: 10px 25px;
   text-decoration: none;
   font-size: 0.8rem;
@@ -93,8 +93,8 @@
 }
 
 .loginButton:hover, .activeLogin {
-  background: #ff8c00;
-  color: #000;
+  background: #ffff;
+  color: black;
   box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
 }
 
@@ -115,8 +115,8 @@
 
 .logoutButton:hover {
   background: rgba(220, 38, 38, 0.15);
-  color: #ff4d4d;
-  border-color: #ff4d4d;
+  color: #ffff;
+  border-color: #ffffff;
   box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
   transform: translateY(-2px);
 }

@@ -84,7 +84,7 @@ const Manifeste = () => {
           <aside className={styles.profileSide}>
             <div className={styles.profileWrapper}>
               <div className={styles.imageFrame}>
-                <img src="/images/photo-profil.png" alt="Yann Barthes" />
+                <img src="/images/image_casque.png" alt="Yann Barthes" />
               </div>
               <div className={styles.profileInfo}>
                 <h3 className={styles.name}>Yann Barthes</h3>
