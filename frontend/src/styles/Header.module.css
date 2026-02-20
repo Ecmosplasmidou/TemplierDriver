@@ -36,7 +36,6 @@
   gap: 40px;
 }
 
-/* --- EFFET DE COURSE ORANGE --- */
 .navLink {
   position: relative;
   color: rgba(255, 255, 255, 0.7); /* Blanc cassé par défaut */
@@ -52,19 +51,17 @@
   cursor: pointer;
 }
 
-/* La ligne de "course" sous le lien */
 .navLink::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 0; /* Cachée au départ */
+  width: 0;
   height: 2px;
-  background-color: #ff8c00; /* Ton orange Templier */
+  background-color: #ff8c00;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover : Couleur orange + ligne qui s'étend */
 .navLink:hover {
   color: #ff8c00;
 }
@@ -73,7 +70,6 @@
   width: 100%;
 }
 
-/* État Actif : La ligne reste présente */
 .activeLink {
   color: #ff8c00 !important;
   font-weight: 700 !important;
@@ -83,7 +79,6 @@
   width: 100%;
 }
 
-/* BOUTON CONNEXION (Style Outline Orange) */
 .loginButton {
   background: transparent;
   color: #ff8c00;
@@ -99,11 +94,11 @@
 
 .loginButton:hover, .activeLogin {
   background: #ff8c00;
-  color: #000; /* Texte noir sur fond orange pour lisibilité */
+  color: #000;
   box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
 }
 
-/* BOUTON DECONNEXION */
+
 .logoutButton {
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.8);
@@ -126,7 +121,6 @@
   transform: translateY(-2px);
 }
 
-/* RESPONSIVE BURGER */
 .burger {
   display: none;
   flex-direction: column;
@@ -146,7 +140,6 @@
 
 @media (max-width: 768px) {
   .burger { display: flex; }
-  
   .nav {
     position: fixed;
     top: 80px;
@@ -164,6 +157,6 @@
   .nav.active { right: 0; }
   
   .navLink {
-    font-size: 1.2rem; /* Plus gros sur mobile */
+    font-size: 1.2rem;
   }
 }

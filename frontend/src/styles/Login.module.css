@@ -1,17 +1,14 @@
-/* --- PAGE WRAPPER --- */
 .loginPage {
   background-color: #000;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Dégagement important pour le Header sur Desktop */
   padding: 120px 20px 60px; 
   background: radial-gradient(circle at center, #111 0%, #000 100%);
-  box-sizing: border-box; /* Assure que le padding ne casse pas la hauteur */
+  box-sizing: border-box;
 }
 
-/* --- CONTAINER PRINCIPAL --- */
 .loginContainer {
   width: 100%;
   max-width: 450px;
@@ -23,10 +20,9 @@
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   border-radius: 2px;
-  box-sizing: border-box; /* Empêche le container de sortir de l'écran */
+  box-sizing: border-box;
 }
 
-/* Ligne de lumière supérieure */
 .loginContainer::before {
   content: "";
   position: absolute;
@@ -37,7 +33,6 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
 }
 
-/* --- TYPOGRAPHIE --- */
 .subtitle {
   text-transform: uppercase;
   letter-spacing: 6px;
@@ -58,7 +53,6 @@
   margin-bottom: 45px;
 }
 
-/* --- FORMULAIRE & INPUTS --- */
 .form {
   display: flex;
   flex-direction: column;
@@ -72,8 +66,8 @@
 }
 
 .inputGroup input {
-  width: 100%; /* L'input prend toute la largeur du groupe */
-  box-sizing: border-box; /* Inclus le padding dans la largeur de 100% */
+  width: 100%;
+  box-sizing: border-box;
   padding: 16px 20px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -89,7 +83,6 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* --- ERREUR --- */
 .error {
   color: #af313a;
   font-size: 0.8rem;
@@ -100,7 +93,6 @@
   box-sizing: border-box;
 }
 
-/* --- BOUTON --- */
 .submitBtn {
   width: 100%;
   box-sizing: border-box;
@@ -130,7 +122,6 @@
   transform: none;
 }
 
-/* --- BAS DE PAGE --- */
 .toggleText {
   color: #555;
   text-align: center;
@@ -154,16 +145,15 @@
 }
 
 /* --- RESPONSIVE --- */
-
 @media (max-width: 768px) {
   .loginPage {
-    padding: 100px 15px 40px; /* Moins de padding sur tablette/mobile */
-    align-items: flex-start; /* Permet le scroll si le clavier mobile s'affiche */
+    padding: 100px 15px 40px;
+    align-items: flex-start;
   }
 
   .loginContainer {
     padding: 50px 30px;
-    max-width: 100%; /* Utilise toute la largeur disponible */
+    max-width: 100%;
   }
   
   .title {
@@ -179,33 +169,31 @@
 
   .loginContainer {
     padding: 40px 20px;
-    background: transparent; /* Style plus épuré sur petit mobile */
+    background: transparent;
     border: none;
     box-shadow: none;
     backdrop-filter: none;
   }
 
   .inputGroup input {
-    padding: 14px 15px; /* Plus compact */
+    padding: 14px 15px;
   }
 
   .submitBtn:hover {
-    transform: none; /* Évite les bugs visuels au clic tactile */
+    transform: none;
   }
 }
 
-/* Le conteneur qui englobe l'input et l'oeil */
 .inputGroup {
-  position: relative; /* Indispensable pour que l'oeil se cale par rapport à ce bloc */
+  position: relative;
   width: 100%;
   margin-bottom: 1.5rem;
 }
 
-/* L'input lui-même */
 .passwordInput {
   width: 100%;
   padding: 12px;
-  padding-right: 45px; /* On crée un espace vide à droite pour ne pas écrire SOUS l'oeil */
+  padding-right: 45px;
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -214,15 +202,15 @@
 }
 
 .passwordInput:focus {
-  border-color: #a18a5e; /* Ou la couleur de ton thème Templier */
+  border-color: #a18a5e;
   outline: none;
 }
 
 .eyeBtn {
   position: absolute;
-  right: 15px; /* Distance du bord droit */
+  right: 15px;
   top: 50%;
-  transform: translateY(-50%); /* Centre parfaitement à la verticale */
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   padding: 0;
@@ -233,7 +221,7 @@
   cursor: pointer;
   color: #666;
   font-size: 1.1rem;
-  z-index: 10; /* S'assure qu'il est au-dessus de l'input */
+  z-index: 10;
   transition: color 0.2s;
 }
 

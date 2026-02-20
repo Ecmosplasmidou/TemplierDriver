@@ -110,7 +110,6 @@ const Login = () => {
                 }
               </button>
             </form>
-
             <p className={styles.toggleText}>
               {isRegister ? "Déjà membre ?" : "Pas encore inscrit ?"}
               <span onClick={toggleMode}>

@@ -16,7 +16,7 @@
   text-align: left;
 }
 
-/* Style identique au sous-titre de Contact */
+
 .subtitle {
   text-transform: uppercase;
   letter-spacing: 5px;
@@ -89,7 +89,6 @@
     0 20px 50px rgba(0, 0, 0, 0.9), 
     0 0 15px rgba(180, 180, 180, 0.2), 
     0 0 30px rgba(255, 255, 255, 0.05);
-  
   transition: all 0.4s ease;
 }
 
@@ -143,7 +142,6 @@
 }
 
 /* --- RESPONSIVE --- */
-
 @media screen and (max-width: 1024px) {
   .contentGrid {
     grid-template-columns: 1fr;
