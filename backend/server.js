@@ -4,19 +4,30 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors({origin: [
-  'https://templierdriver.com', 
-  'https://templierdriver.org', 
-  'https://templier-driver.vercel.app'
-],
+
+app.use(cors({
+  origin: [
+    'https://templierdriver.com', 
+    'https://www.templierdriver.com', // Ajoute le WWW pour éviter les blocages
+    'https://templierdriver.org', 
+    'https://templier-driver.vercel.app'
+  ],
   methods: ['GET', 'POST'],
   credentials: true
 }));
+
 app.use(express.json());
 
-let SHOPIFY_ACCESS_TOKEN = null;
+app.get('/', (req, res) => res.send("🚀 Bridge Shopify Templier Driver en ligne"));
+
+let SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN || null;
 
 const fetchShopifyToken = async () => {
+  if (process.env.SHOPIFY_ACCESS_TOKEN) {
+    SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
+    return;
+  }
+
   try {
     const response = await axios.post(`https://${process.env.SHOPIFY_SHOP_NAME}/admin/oauth/access_token`, {
       client_id: process.env.SHOPIFY_CLIENT_ID,
@@ -29,10 +40,12 @@ const fetchShopifyToken = async () => {
     console.error("❌ Erreur lors de la récupération du token:", error.response?.data || error.message);
   }
 };
+
 fetchShopifyToken();
 
 app.get('/api/user-spend/:email', async (req, res) => {
   const { email } = req.params;
+  
   if (!SHOPIFY_ACCESS_TOKEN) {
     await fetchShopifyToken();
   }
@@ -42,7 +55,7 @@ app.get('/api/user-spend/:email', async (req, res) => {
       url: `https://${process.env.SHOPIFY_SHOP_NAME}/admin/api/2024-01/customers/search.json?query=email:${email}`,
       method: 'GET',
       headers: {
-        'X-Shopify-Access-Token': SHOPIFY_ACCESS_TOKEN, // Utilise le token dynamique
+        'X-Shopify-Access-Token': SHOPIFY_ACCESS_TOKEN,
         'Content-Type': 'application/json',
       },
     });
@@ -59,7 +72,7 @@ app.get('/api/user-spend/:email', async (req, res) => {
     }
   } catch (error) {
     if (error.response?.status === 401) {
-      SHOPIFY_ACCESS_TOKEN = null;
+      SHOPIFY_ACCESS_TOKEN = null; // Reset pour tenter une reconnexion au prochain appel
     }
     console.error("Erreur Shopify API:", error.response?.data || error.message);
     res.status(500).json({ error: "Impossible de récupérer les données" });
@@ -67,7 +80,6 @@ app.get('/api/user-spend/:email', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => { // Ajout de '0.0.0.0' pour Render
   console.log(`🚀 Serveur Bridge lancé sur le port ${PORT}`);
-  console.log(`🏠 Boutique connectée : ${process.env.SHOPIFY_SHOP_NAME}`);
 });
