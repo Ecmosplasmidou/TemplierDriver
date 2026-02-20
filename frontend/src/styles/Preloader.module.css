@@ -3,28 +3,57 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: #0f0f0f;
+  height: 100vh;
+  background-color: #000000;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  font-family: "Inter", sans-serif;
 }
 
 .loaderContent {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 
 .loaderGif {
-  width: 200px;
+  width: 150px; /* À ajuster selon ton GIF */
   height: auto;
-  margin-bottom: 10px;
+  filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.3));
 }
 
-#loader-percent {
-  color: white;
+.percentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.percentText {
+  color: #ff8c00; /* Ton orange Templier */
   font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  font-family: serif; /* Look plus historique */
+}
+
+/* Optionnel : Une barre de progression fine */
+.progressBar {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%; /* Sera animé si tu veux, ou tu peux le retirer */
+  background: #ff8c00;
 }

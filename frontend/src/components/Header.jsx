@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Header.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import { auth } from "../firebase.js"; // Import explicite pour éviter le bug .json
+import { auth } from "../firebase.js";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const Header = () => {
@@ -9,7 +9,6 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Surveiller l'état de connexion
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -31,7 +30,6 @@ const Header = () => {
     }
   };
 
-  // Fonction pour gérer le style actif des liens
   const getLinkClass = ({ isActive }) => 
     isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink;
 
@@ -73,7 +71,7 @@ const Header = () => {
 
           {user ? (
             <button 
-              className={styles.logoutButton} 
+              className={`${styles.navLink} ${styles.logoutButton}`} 
               onClick={handleLogout}
             >
               Déconnexion

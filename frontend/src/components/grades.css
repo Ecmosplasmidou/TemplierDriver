@@ -9,11 +9,10 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  padding: 140px 5% 80px; /* Plus d'espace pour le header */
+  padding: 140px 5% 80px;
   min-height: 100vh;
   background: radial-gradient(circle at center, #111 0%, #000 100%);
 }
-
 
 .status-bar {
   background: rgba(255, 255, 255, 0.03);
@@ -32,32 +31,7 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.status-bar strong {
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255,255,255,0.3);
-}
-
-.status-bar small {
-  color: #666;
-  text-transform: lowercase;
-  font-style: italic;
-  margin-left: 8px;
-  letter-spacing: 0;
-}
-
-.separator {
-  color: #333;
-  font-weight: 100;
-}
-
-.max-reached {
-  color: #b2b2b2;
-  font-weight: bold;
-  letter-spacing: 3px;
-  text-shadow: 0 0 15px rgba(255,255,255,0.2);
-}
-
-
+/* --- ANIMATION DES LIGNES --- */
 .card-row {
   display: flex;
   justify-content: center;
@@ -74,18 +48,13 @@ body {
 .card-row:nth-child(4) { animation-delay: 0.6s; }
 .card-row:nth-child(5) { animation-delay: 0.8s; }
 
-
 @keyframes fadeSlideIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-
+/* --- CARDS AVEC OMBRE MÉTAL --- */
 .card-container {
   perspective: 1200px;
-  transition: opacity 0.5s ease, filter 0.5s ease;
 }
 
 .card {
@@ -97,11 +66,9 @@ body {
   cursor: pointer;
 }
 
-
 .card-container:hover .card {
   transform: rotateY(180deg) scale(1.05) !important;
 }
-
 
 .card-front,
 .card-back {
@@ -109,11 +76,27 @@ body {
   height: 100%;
   position: absolute;
   backface-visibility: hidden;
-  border-radius: 2px; /* Style sec / Templier */
+  border-radius: 2px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7);
   background-color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* OMBRE GRIS MÉTAL (Multi-couches pour faire ressortir la carte du noir) */
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.9),           /* Ombre portée de base */
+    0 0 15px rgba(180, 180, 180, 0.2),        /* Halo gris acier discret */
+    0 0 30px rgba(255, 255, 255, 0.05);       /* Lueur pour décoller du fond noir */
+  
+  transition: box-shadow 0.4s ease;
+}
+
+/* Accentuation de l'ombre au hover pour l'effet "ressorti" */
+.card-container:hover .card-front,
+.card-container:hover .card-back {
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 1),
+    0 0 25px rgba(200, 200, 200, 0.4),        /* Métal plus brillant au hover */
+    0 0 50px rgba(255, 255, 255, 0.1);
 }
 
 .card-front img,
@@ -122,12 +105,7 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-
-.card-front {
-  filter: brightness(0.7);
-  transition: filter 0.3s;
+  filter: none !important; /* On enlève tous les filtres pour que ce soit net */
 }
 
 .card-front::after {
@@ -137,45 +115,18 @@ body {
   background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.9));
 }
 
-.card-container:hover .card-front {
-  filter: brightness(1);
-}
-
-
 .card-back {
   transform: rotateY(180deg);
 }
 
-
-.card-back::after {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-}
-
-/* --- SYSTÈME DE GRADES ACTIFS --- */
-
-.card-container.active-grade {
-  animation: pulseActive 2s infinite alternate ease-in-out;
-  opacity: 1 !important;
-  filter: grayscale(0) !important;
-}
-
+/* --- GRADES ACTIFS (Métal + Gris Acier) --- */
 .card-container.active-grade .card-front,
 .card-container.active-grade .card-back {
-  border: 2px solid #b2b2b2; /* Gris Acier */
+  border: 2px solid #b2b2b2;
   box-shadow: 
-    0 0 20px rgba(255, 255, 255, 0.15), 
-    0 0 40px rgba(180, 180, 180, 0.1);
+    0 0 25px rgba(255, 255, 255, 0.2), 
+    0 0 50px rgba(180, 180, 180, 0.3); /* Lueur métal actif */
 }
-
-@keyframes pulseActive {
-  from { transform: scale(1); }
-  to { transform: scale(1.03); }
-}
-
 
 .active-badge {
   position: absolute;
@@ -190,22 +141,9 @@ body {
   border-radius: 1px;
   z-index: 10;
   letter-spacing: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-.card-container:not(.active-grade) {
-  opacity: 0.4;
-  filter: grayscale(1) brightness(0.6);
-}
-
-.card-container:not(.active-grade):hover {
-  opacity: 0.8;
-  filter: grayscale(0.5) brightness(0.9);
 }
 
 /* --- RESPONSIVE --- */
-
 @media screen and (max-width: 1024px) {
   .card {
     width: 220px;

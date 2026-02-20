@@ -26,7 +26,6 @@ const Grades = () => {
       if (user) {
         setUserEmail(user.email);
         try {
-          // Appel à ton serveur Bridge Node.js
           const response = await fetch(`http://localhost:5000/api/user-spend/${user.email}`);
           const data = await response.json();
           setUserSpend(data.total_spent || 0);
@@ -36,7 +35,7 @@ const Grades = () => {
           setLoading(false);
         }
       } else {
-        navigate("/login"); // Redirige si non connecté
+        navigate("/login");
       }
     });
 

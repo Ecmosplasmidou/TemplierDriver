@@ -4,10 +4,10 @@
   left: 0;
   width: 100%;
   height: 80px;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.85); /* Un peu plus sombre pour faire ressortir l'orange */
+  backdrop-filter: blur(12px);
   z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.2); /* Bordure discrète orange */
 }
 
 .headerInner {
@@ -21,8 +21,13 @@
 }
 
 .logo img {
-  height: 50px;
+  height: 55px;
   width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover img {
+  transform: scale(1.05); /* Petit effet zoom sur le logo */
 }
 
 .nav {
@@ -31,47 +36,74 @@
   gap: 40px;
 }
 
-/* Liens de base */
+/* --- EFFET DE COURSE ORANGE --- */
 .navLink {
-  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  color: rgba(255, 255, 255, 0.7); /* Blanc cassé par défaut */
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  transition: all 0.3s ease;
-  font-weight: 400;
+  transition: color 0.3s ease;
+  font-weight: 500;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
+/* La ligne de "course" sous le lien */
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0; /* Cachée au départ */
+  height: 2px;
+  background-color: #ff8c00; /* Ton orange Templier */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover : Couleur orange + ligne qui s'étend */
 .navLink:hover {
-  color: #fff;
+  color: #ff8c00;
 }
 
-/* État Actif (Gras) */
+.navLink:hover::after {
+  width: 100%;
+}
+
+/* État Actif : La ligne reste présente */
 .activeLink {
-  color: #fff !important;
-  font-weight: 800 !important;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  color: #ff8c00 !important;
+  font-weight: 700 !important;
 }
 
-/* Bouton Connexion */
+.activeLink::after {
+  width: 100%;
+}
+
+/* BOUTON CONNEXION (Style Outline Orange) */
 .loginButton {
   background: transparent;
-  color: #fff;
-  border: 1px solid #fff;
+  color: #ff8c00;
+  border: 1px solid #ff8c00;
   padding: 10px 25px;
   text-decoration: none;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .loginButton:hover, .activeLogin {
-  background: #fff;
-  color: #000;
+  background: #ff8c00;
+  color: #000; /* Texte noir sur fond orange pour lisibilité */
+  box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
 }
 
-
+/* BOUTON DECONNEXION */
 .logoutButton {
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.8);
@@ -83,17 +115,18 @@
   letter-spacing: 2px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(5px);
+  font-family: inherit;
 }
 
 .logoutButton:hover {
-  background: rgba(220, 38, 38, 0.1);
+  background: rgba(220, 38, 38, 0.15);
   color: #ff4d4d;
   border-color: #ff4d4d;
   box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-/* Responsive Burger */
+/* RESPONSIVE BURGER */
 .burger {
   display: none;
   flex-direction: column;
@@ -101,12 +134,13 @@
   background: none;
   border: none;
   cursor: pointer;
+  padding: 5px;
 }
 
 .burger span {
   width: 30px;
   height: 2px;
-  background: #fff;
+  background: #ffffff;
   transition: 0.3s;
 }
 
@@ -119,11 +153,17 @@
     right: -100%;
     width: 100%;
     height: calc(100vh - 80px);
-    background: #000;
+    background: rgba(0, 0, 0, 0.95);
     flex-direction: column;
-    padding-top: 50px;
-    transition: 0.4s;
+    justify-content: center;
+    gap: 30px;
+    padding-top: 0;
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .nav.active { right: 0; }
+  
+  .navLink {
+    font-size: 1.2rem; /* Plus gros sur mobile */
+  }
 }
