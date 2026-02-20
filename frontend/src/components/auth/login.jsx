@@ -10,7 +10,7 @@ const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // État pour l'œil
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Login = () => {
   const toggleMode = () => {
     setIsRegister(!isRegister);
     setError("");
-    setShowPassword(false); // Reset de l'œil quand on change de mode
+    setShowPassword(false);
   };
 
   return (
@@ -62,7 +62,6 @@ const Login = () => {
             </h2>
             
             <form onSubmit={handleAuth} className={styles.form}>
-              {/* CHAMP EMAIL */}
               <div className={styles.inputGroup}>
                 <input 
                   type="email" 
@@ -74,7 +73,6 @@ const Login = () => {
                 />
               </div>
 
-              {/* CHAMP MOT DE PASSE AVEC OEIL INTEGRÉ */}
               <div className={styles.inputGroup}>
                 <input 
                   type={showPassword ? "text" : "password"} 

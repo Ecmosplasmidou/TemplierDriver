@@ -71,7 +71,7 @@ const Header = () => {
 
           {user ? (
             <button 
-              className={`${styles.navLink} ${styles.logoutButton}`} 
+              className={`${styles.logoutButton}`} 
               onClick={handleLogout}
             >
               Déconnexion
