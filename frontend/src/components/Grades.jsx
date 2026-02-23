@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "./grades.css";
@@ -18,31 +17,30 @@ const cardsData = [
 const Grades = () => {
   const [userSpend, setUserSpend] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState("");
-  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUserEmail(user.email);
+        setIsLoggedIn(true);
         try {
-        const backendUrl = "https://templierdriver-server.onrender.com"; 
+          const backendUrl = "https://templierdriver-server.onrender.com"; 
           const response = await fetch(`${backendUrl}/api/user-spend/${user.email}`);
           if (!response.ok) throw new Error("Erreur serveur");
           const data = await response.json();
           setUserSpend(data.total_spent || 0);
         } catch (error) {
           console.error("Erreur récupération shopify:", error);
-        } finally {
-          setLoading(false);
         }
       } else {
-        navigate("/login");
+        setIsLoggedIn(false);
+        setUserSpend(0);
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, []);
 
   const activeGrade = [...cardsData]
     .filter(c => userSpend >= c.threshold)
@@ -52,20 +50,53 @@ const Grades = () => {
     .sort((a, b) => a.threshold - b.threshold)
     .find(c => c.threshold > userSpend);
 
+  // Calcul du pourcentage pour la barre de progression
+  const calculateProgress = () => {
+    if (!nextGrade) return 100;
+    const currentLevelThreshold = activeGrade ? activeGrade.threshold : 0;
+    const progress = ((userSpend - currentLevelThreshold) / (nextGrade.threshold - currentLevelThreshold)) * 100;
+    return Math.min(Math.max(progress, 0), 100);
+  };
+
   return (
     <div className="page-fade-in">
       <Header />
       <div className="cards-wrapper">
-        <div className="status-bar">
-          <span>Dépenses : <strong>{userSpend}€</strong></span>
-          <span className="separator">|</span>
-          {nextGrade ? (
-            <span>Prochain palier : <strong>{nextGrade.title}</strong> à <strong>{nextGrade.threshold}€</strong></span>
-          ) : (
-            <span className="max-reached">Rang de Maître Absolu</span>
-          )}
+        
+        {/* Barre de Progression Visuelle */}
+        <div className="progression-container">
+          <div className="status-info">
+            <span>Dépenses : <strong>{userSpend}€</strong></span>
+            {isLoggedIn ? (
+              nextGrade ? (
+                <span>Objectif : <strong>{nextGrade.title}</strong> ({nextGrade.threshold}€)</span>
+              ) : (
+                <span className="max-reached">Rang de Maître Absolu Atteint</span>
+              )
+            ) : (
+              <span>Connectez-vous pour voir votre grade</span>
+            )}
+          </div>
+          
+          <div className="progress-track">
+            <div 
+              className="progress-bar-fill" 
+              style={{ width: `${calculateProgress()}%` }}
+            >
+              <div className="progress-glow"></div>
+            </div>
+          </div>
+          
+          <div className="threshold-markers">
+            {cardsData.slice(0).reverse().map(grade => (
+              <div key={grade.id} className={`marker ${userSpend >= grade.threshold ? "met" : ""}`}>
+                <span className="marker-label">{grade.threshold}€</span>
+              </div>
+            ))}
+          </div>
         </div>
 
+        {/* Grille des Grades */}
         <div className="card-row center">
           <Card data={cardsData[0]} isActive={activeGrade?.id === 'maitre'} />
         </div>
@@ -91,7 +122,6 @@ const Card = ({ data, isActive }) => (
     <div className="card">
       <div className="card-front">
         {isActive && <div className="active-badge">ACTIF</div>}
-        <div className="card-id"></div>
         <img src="images/templierdesc.jpg" alt="Sceau" />
       </div>
       <div className="card-back">
