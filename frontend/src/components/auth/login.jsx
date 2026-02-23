@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
 
 import styles from "../../styles/Login.module.css";
 import Header from "../Header";
@@ -24,20 +24,31 @@ const Login = () => {
 
     try {
       if (isRegister) {
+        // 1. Création du compte Firebase
         await createUserWithEmailAndPassword(auth, email, password);
+        
+        // 2. Synchronisation avec Shopify (Création du client côté boutique)
+        try {
+          await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
+            email: email,
+            firstName: email.split('@')[0] // Extrait le nom avant l'arobase par défaut
+          });
+        } catch (syncErr) {
+          // On log l'erreur mais on ne bloque pas l'utilisateur s'il est déjà créé dans Firebase
+          console.error("Erreur de synchronisation Shopify:", syncErr);
+        }
       } else {
+        // Connexion classique
         await signInWithEmailAndPassword(auth, email, password);
       }
+      
+      // Redirection vers l'espace des grades
       navigate("/grades");
+
     } catch (err) {
       console.error("CODE ERREUR:", err.code);
-
-      if (isRegister) {
-        await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
-          email: email 
-        });
-      }
       
+      // Gestion des messages d'erreur Firebase
       if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         setError("Identifiants incorrects (vérifiez l'email ou le mot de passe).");
       } else if (err.code === 'auth/email-already-in-use') {
@@ -113,7 +124,7 @@ const Login = () => {
                 disabled={isLoading}
               >
                 {isLoading 
-                  ? "Connexion..." 
+                  ? "Action en cours..." 
                   : (isRegister ? "Créer un compte" : "Entrer dans l'ordre")
                 }
               </button>
