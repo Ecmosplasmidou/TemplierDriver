@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { axios } from 'axios'
+import axios from 'axios'
 
 import styles from "../../styles/Login.module.css";
 import Header from "../Header";
