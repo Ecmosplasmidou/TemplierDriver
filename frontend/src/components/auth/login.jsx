@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { axios } from 'axios'
+
 import styles from "../../styles/Login.module.css";
 import Header from "../Header";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -29,6 +31,12 @@ const Login = () => {
       navigate("/grades");
     } catch (err) {
       console.error("CODE ERREUR:", err.code);
+
+      if (isRegister) {
+        await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
+          email: email 
+        });
+      }
       
       if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         setError("Identifiants incorrects (vérifiez l'email ou le mot de passe).");
