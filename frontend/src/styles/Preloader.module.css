@@ -4,55 +4,108 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: #000000;
+  background-color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  overflow: hidden;
+}
+
+/* Texture de fond type bitume ou carbone */
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(20,20,20,1) 0%, rgba(0,0,0,1) 100%);
+  opacity: 0.8;
 }
 
 .loaderContent {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  z-index: 2;
+}
+
+.logoWrapper {
+  margin-bottom: 40px;
+  filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.5));
 }
 
 .loaderGif {
-  width: 150px;
+  width: 180px;
   height: auto;
-  filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.3));
 }
 
-.percentContainer {
+.raceContainer {
+  width: 300px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  min-width: 200px;
+  gap: 8px;
+}
+
+.labelWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.raceLabel {
+  color: #fff;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-style: italic; /* Style course */
+  opacity: 0.7;
 }
 
 .percentText {
   color: #ff8c00;
-  font-size: 1.5rem;
-  font-weight: 300;
-  letter-spacing: 4px;
-  font-family: serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-style: italic;
+  font-family: 'Inter', sans-serif;
 }
 
 .progressBar {
   width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0px; /* On reste sur des angles vifs */
+  transform: skewX(-20deg); /* Inclinaison pour effet vitesse */
   overflow: hidden;
-  position: relative;
 }
 
 .progressFill {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   width: 0%;
-  background: #ff8c00;
+  background: linear-gradient(90deg, #ff4500, #ff8c00);
+  position: relative;
+  transition: width 0.1s ease-out;
+}
+
+.glow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 10px;
+  background: #fff;
+  box-shadow: 0 0 15px #ff8c00, 0 0 30px #ff4500;
+}
+
+/* Ligne de vitesse décorative */
+.speedLine {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,140,0,0.5), transparent);
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .raceContainer { width: 220px; }
+  .percentText { font-size: 1.4rem; }
 }

@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import styles from "../../styles/Login.module.css";
 import Header from "../Header";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaInfoCircle, FaCheckCircle } from "react-icons/fa";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -14,58 +14,66 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [infoMessage, setInfoMessage] = useState(""); // Nouveau message d'info
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAuth = async (e) => {
     e.preventDefault();
     setError("");
+    setInfoMessage("");
     setIsLoading(true);
 
     try {
       if (isRegister) {
-        // 1. Création du compte Firebase
+        // 1. Création Firebase
         await createUserWithEmailAndPassword(auth, email, password);
         
-        // 2. Synchronisation avec Shopify (Création du client côté boutique)
+        // 2. Synchro Shopify
         try {
-          await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
+          const response = await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
             email: email,
-            firstName: email.split('@')[0] // Extrait le nom avant l'arobase par défaut
+            firstName: email.split('@')[0]
           });
+
+          // Si le backend dit que le client est nouveau
+          if (response.data.message === "Client créé sur Shopify") {
+            setInfoMessage("Compte créé ! Un email de confirmation Shopify vous a été envoyé pour lier vos achats.");
+          } else {
+            setInfoMessage("Connexion réussie ! Votre compte est déjà lié à Shopify.");
+          }
         } catch (syncErr) {
-          // On log l'erreur mais on ne bloque pas l'utilisateur s'il est déjà créé dans Firebase
-          console.error("Erreur de synchronisation Shopify:", syncErr);
+          console.error("Erreur synchro:", syncErr);
         }
       } else {
         // Connexion classique
         await signInWithEmailAndPassword(auth, email, password);
       }
       
-      // Redirection vers l'espace des grades
-      navigate("/grades");
+      // On laisse le message s'afficher 2 secondes avant de naviguer si c'est une inscription
+      const delay = isRegister ? 3000 : 0;
+      setTimeout(() => {
+        navigate("/grades");
+      }, delay);
 
     } catch (err) {
       console.error("CODE ERREUR:", err.code);
-      
-      // Gestion des messages d'erreur Firebase
       if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-        setError("Identifiants incorrects (vérifiez l'email ou le mot de passe).");
+        setError("Identifiants incorrects.");
       } else if (err.code === 'auth/email-already-in-use') {
         setError("Cet email possède déjà un compte.");
-      } else if (err.code === 'auth/weak-password') {
-        setError("Le mot de passe doit contenir au moins 6 caractères.");
       } else {
         setError("Erreur : " + err.code);
       }
     } finally {
-      setIsLoading(false);
+      if (!isRegister) setIsLoading(false); // On garde le loading si on attend la redirection
     }
   };
 
   const toggleMode = () => {
     setIsRegister(!isRegister);
     setError("");
+    setInfoMessage("");
     setShowPassword(false);
   };
 
@@ -76,64 +84,44 @@ const Login = () => {
         <div className={styles.loginContainer}>
           <div className={styles.formBox}>
             <span className={styles.subtitle}>L'accès à l'ordre</span>
-            <h2 className={styles.title}>
-              {isRegister ? "Rejoindre" : "Se Connecter"}
-            </h2>
+            <h2 className={styles.title}>{isRegister ? "Rejoindre" : "Se Connecter"}</h2>
             
             <form onSubmit={handleAuth} className={styles.form}>
               <div className={styles.inputGroup}>
-                <input 
-                  type="email" 
-                  placeholder="Email de commande" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required 
-                  autoComplete="email"
-                />
+                <input type="email" placeholder="Email de commande" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
 
               <div className={styles.inputGroup}>
                 <input 
                   type={showPassword ? "text" : "password"} 
                   placeholder="Mot de passe" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
                   required 
-                  autoComplete={isRegister ? "new-password" : "current-password"}
                   className={styles.passwordInput}
                 />
-                <button 
-                  type="button" 
-                  className={styles.eyeBtn}
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                >
+                <button type="button" className={styles.eyeBtn} onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
               
-              {error && (
-                <div className={styles.error}>
-                  {error}
+              {/* Affichage du message de succès/info Shopify */}
+              {infoMessage && (
+                <div className={styles.infoBox}>
+                  <FaCheckCircle className={styles.infoIcon} />
+                  <span>{infoMessage}</span>
                 </div>
               )}
+
+              {error && <div className={styles.error}>{error}</div>}
               
-              <button 
-                type="submit" 
-                className={styles.submitBtn} 
-                disabled={isLoading}
-              >
-                {isLoading 
-                  ? "Action en cours..." 
-                  : (isRegister ? "Créer un compte" : "Entrer dans l'ordre")
-                }
+              <button type="submit" className={styles.submitBtn} disabled={isLoading}>
+                {isLoading ? "Traitement..." : (isRegister ? "Créer un compte" : "Entrer dans l'ordre")}
               </button>
             </form>
             <p className={styles.toggleText}>
               {isRegister ? "Déjà membre ?" : "Pas encore inscrit ?"}
-              <span onClick={toggleMode}>
-                {isRegister ? " Se connecter" : " Créer un compte"}
-              </span>
+              <span onClick={toggleMode}>{isRegister ? " Se connecter" : " Créer un compte"}</span>
             </p>
           </div>
         </div>
