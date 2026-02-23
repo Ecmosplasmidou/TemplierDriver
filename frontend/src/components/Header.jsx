@@ -51,13 +51,16 @@ const Header = () => {
         </button>
 
         <nav className={`${styles.nav} ${menuOpen ? styles.active : ""}`}>
+          <NavLink to="/" className={getLinkClass} onClick={() => setMenuOpen(false)}>
+            Accueil
+          </NavLink>
+
           <NavLink to="/grades" className={getLinkClass} onClick={() => setMenuOpen(false)}>
             Grades
           </NavLink>
           
           <a 
             href="https://shop.templierdriver.com" 
-            target="_blank" 
             rel="noopener noreferrer" 
             className={styles.navLink}
             onClick={() => setMenuOpen(false)}
