@@ -72,7 +72,7 @@ app.get('/api/user-spend/:email', async (req, res) => {
     }
   } catch (error) {
     if (error.response?.status === 401) {
-      SHOPIFY_ACCESS_TOKEN = null; // Reset pour tenter une reconnexion au prochain appel
+      SHOPIFY_ACCESS_TOKEN = null; 
     }
     console.error("Erreur Shopify API:", error.response?.data || error.message);
     res.status(500).json({ error: "Impossible de récupérer les données" });

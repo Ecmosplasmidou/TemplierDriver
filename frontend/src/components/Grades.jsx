@@ -26,7 +26,9 @@ const Grades = () => {
       if (user) {
         setUserEmail(user.email);
         try {
-          const response = await fetch(`http://localhost:5000/api/user-spend/${user.email}`);
+        const backendUrl = "https://templierdriver-server.onrender.com"; 
+          const response = await fetch(`${backendUrl}/api/user-spend/${user.email}`);
+          if (!response.ok) throw new Error("Erreur serveur");
           const data = await response.json();
           setUserSpend(data.total_spent || 0);
         } catch (error) {
