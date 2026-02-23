@@ -2,10 +2,12 @@ import React from "react";
 import styles from "../styles/PushSlide.module.css";
 
 const PushSlide = () => {
+  const items = [...Array(10)]
+
   return (
     <div className={styles.pushSlide}>
       <div className={styles.slideTrack}>
-        {[...Array(5)].map((_, i) => (
+        {[...items, ...items].map((_, i) => (
           <div key={i} className={styles.slideItem}>
             <span>PUSH,PUSH,PUSH</span>
             <img
