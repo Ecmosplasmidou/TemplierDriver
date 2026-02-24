@@ -46,8 +46,13 @@ const Login = () => {
       
       const delay = isRegister ? 3000 : 0;
       setTimeout(() => {
-        const shopifyUrl = "https://shopify.com/97061110099/account";
-        window.location.href = new URL(shopifyUrl).toString();
+        // Cette URL force Shopify à rediriger vers l'espace client spécifique après authentification
+        const shopifyUrl = "https://shopify.com/97061110099/account/auth/login";
+        
+        // On ajoute un paramètre de redirection pour éviter de rester bloqué
+        const finalUrl = `${shopifyUrl}?redirect_uri=https://shopify.com/97061110099/account`;
+        
+        window.location.href = finalUrl;
         return;
       }, delay);
 
