@@ -18,7 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 function HubspotTracker() {
   const location = useLocation();
   useEffect(() => {
-    if (window._hsq && location.pathname.startsWith('/')) {
+    if (window._hsq) {
       window._hsq.push(["trackPageView"]);
     }
   }, [location.pathname]);

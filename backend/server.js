@@ -11,7 +11,7 @@ app.use(cors({
     'https://www.templierdriver.com',
     'https://templierdriver.org', 
     'https://templier-driver.vercel.app',
-    'http://localhost:5173' // Pour tes tests locaux
+    'http://localhost:5173'
   ],
   methods: ['GET', 'POST'],
   credentials: true
