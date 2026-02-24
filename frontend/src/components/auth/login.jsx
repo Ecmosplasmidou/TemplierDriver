@@ -44,10 +44,10 @@ const Login = () => {
         await signInWithEmailAndPassword(auth, email, password);
       }
       
-      const delay = isRegister ? 3000 : 0;
-      setTimeout(() => {
-        navigate("/grades");
-      }, delay);
+      // const delay = isRegister ? 3000 : 0;
+      // setTimeout(() => {
+      //   navigate("/grades");
+      // }, delay);
 
     } catch (err) {
       console.error("CODE ERREUR:", err.code);
