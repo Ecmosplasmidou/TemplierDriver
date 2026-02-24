@@ -14,7 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [infoMessage, setInfoMessage] = useState(""); // Nouveau message d'info
+  const [infoMessage, setInfoMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -26,17 +26,12 @@ const Login = () => {
 
     try {
       if (isRegister) {
-        // 1. Création Firebase
         await createUserWithEmailAndPassword(auth, email, password);
-        
-        // 2. Synchro Shopify
         try {
           const response = await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
             email: email,
             firstName: email.split('@')[0]
           });
-
-          // Si le backend dit que le client est nouveau
           if (response.data.message === "Client créé sur Shopify") {
             setInfoMessage("Compte créé ! Un email de confirmation Shopify vous a été envoyé pour lier vos achats.");
           } else {
@@ -46,14 +41,12 @@ const Login = () => {
           console.error("Erreur synchro:", syncErr);
         }
       } else {
-        // Connexion classique
         await signInWithEmailAndPassword(auth, email, password);
       }
       
-      // On laisse le message s'afficher 2 secondes avant de naviguer si c'est une inscription
       const delay = isRegister ? 3000 : 0;
       setTimeout(() => {
-        navigate("/grades");
+        navigate("https://shopify.com/authentication/97061110099/login?client_id=14bc859d-a7cd-428a-a607-15198ea0f343&locale=fr&redirect_uri=%2Fauthentication%2F97061110099%2Foauth%2Fauthorize%3F_cs%3D3.ampS_FROCC_t__2TeKZ8XcRcmg2033VFmssg%26client_id%3D14bc859d-a7cd-428a-a607-15198ea0f343%26locale%3Dfr%26nonce%3Deb3e4471-b55c-429f-9799-c0d0d500f830%26redirect_uri%3Dhttps%253A%252F%252Fshopify.com%252F97061110099%252Faccount%252Fcallback%26region_country%3DFR%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWN99SgqFhRrV3MCilYXgonT&region_country=FR");
       }, delay);
 
     } catch (err) {
@@ -66,7 +59,7 @@ const Login = () => {
         setError("Erreur : " + err.code);
       }
     } finally {
-      if (!isRegister) setIsLoading(false); // On garde le loading si on attend la redirection
+      if (!isRegister) setIsLoading(false);
     }
   };
 
@@ -105,7 +98,6 @@ const Login = () => {
                 </button>
               </div>
               
-              {/* Affichage du message de succès/info Shopify */}
               {infoMessage && (
                 <div className={styles.infoBox}>
                   <FaCheckCircle className={styles.infoIcon} />

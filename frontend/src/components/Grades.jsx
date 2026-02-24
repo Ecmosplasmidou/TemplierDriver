@@ -50,7 +50,6 @@ const Grades = () => {
     .sort((a, b) => a.threshold - b.threshold)
     .find(c => c.threshold > userSpend);
 
-  // Calcul du pourcentage pour la barre de progression
   const calculateProgress = () => {
     if (!nextGrade) return 100;
     const currentLevelThreshold = activeGrade ? activeGrade.threshold : 0;
