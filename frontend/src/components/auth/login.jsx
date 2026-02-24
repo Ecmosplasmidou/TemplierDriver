@@ -18,7 +18,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleAuth = async (e) => {
+const handleAuth = async (e) => {
     e.preventDefault();
     setError("");
     setInfoMessage("");
@@ -27,27 +27,28 @@ const Login = () => {
     try {
       if (isRegister) {
         await createUserWithEmailAndPassword(auth, email, password);
+        
         try {
           const response = await axios.post('https://templierdriver-server.onrender.com/api/sync-user', { 
             email: email,
             firstName: email.split('@')[0]
           });
+
           if (response.data.message === "Client créé sur Shopify") {
-            setInfoMessage("Compte créé ! Un email de confirmation Shopify vous a été envoyé pour lier vos achats.");
+            setInfoMessage("Compte créé avec succès ! Un email Shopify vous a été envoyé.");
           } else {
-            setInfoMessage("Connexion réussie ! Votre compte est déjà lié à Shopify.");
+            setInfoMessage("Compte créé ! Votre profil est déjà lié à Shopify.");
           }
         } catch (syncErr) {
           console.error("Erreur synchro:", syncErr);
+          setInfoMessage("Compte créé, mais erreur de liaison Shopify. Contactez le support.");
         }
+
       } else {
         await signInWithEmailAndPassword(auth, email, password);
+        setInfoMessage("Connexion réussie ! Vous êtes maintenant identifié.");
       }
-      
-      // const delay = isRegister ? 3000 : 0;
-      // setTimeout(() => {
-      //   navigate("/grades");
-      // }, delay);
+      setIsLoading(false);
 
     } catch (err) {
       console.error("CODE ERREUR:", err.code);
@@ -58,8 +59,7 @@ const Login = () => {
       } else {
         setError("Erreur : " + err.code);
       }
-    } finally {
-      if (!isRegister) setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
