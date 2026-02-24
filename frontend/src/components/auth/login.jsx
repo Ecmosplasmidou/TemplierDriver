@@ -45,15 +45,13 @@ const Login = () => {
       }
       
       const delay = isRegister ? 3000 : 0;
-
+      
       setTimeout(() => {
         const shopifyUrl = "https://shopify.com/authentication/97061110099/login?client_id=14bc859d-a7cd-428a-a607-15198ea0f343&locale=fr&redirect_uri=%2Fauthentication%2F97061110099%2Foauth%2Fauthorize%3F_cs%3D3.ampS_FROCC_t__2TeKZ8XcRcmg2033VFmssg%26client_id%3D14bc859d-a7cd-428a-a607-15198ea0f343%26locale%3Dfr%26nonce%3Deb3e4471-b55c-429f-9799-c0d0d500f830%26redirect_uri%3Dhttps%253A%252F%252Fshopify.com%252F97061110099%252Faccount%252Fcallback%26region_country%3DFR%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWN99SgqFhRrV3MCilYXgonT&region_country=FR";
 
-        // Cette ligne vide l'URL de navigation avant de charger la nouvelle
-        // Elle casse toute tentative de React Router de préfixer l'URL
-        window.location.href = new URL(shopifyUrl).toString();
-        
-        return; // Stop tout le reste
+        // Nettoyage radical avant redirection
+        window.stop(); // Arrête tout chargement en cours (Hubspot, etc.)
+        window.location.assign(shopifyUrl);
       }, delay);
 
     } catch (err) {
