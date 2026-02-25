@@ -37,9 +37,8 @@ const fetchShopifyToken = async () => {
       grant_type: 'client_credentials'
     });
     SHOPIFY_ACCESS_TOKEN = response.data.access_token;
-    console.log("✅ Token Shopify récupéré avec succès.");
   } catch (error) {
-    console.error("❌ Erreur lors de la récupération du token:", error.response?.data || error.message);
+    // Erreur silencieuse
   }
 };
 
@@ -73,7 +72,6 @@ app.get('/api/user-spend/:email', async (req, res) => {
     }
   } catch (error) {
     if (error.response?.status === 401) SHOPIFY_ACCESS_TOKEN = null;
-    console.error("Erreur Shopify API (Spend):", error.response?.data || error.message);
     res.status(500).json({ error: "Impossible de récupérer les données" });
   }
 });
@@ -85,7 +83,6 @@ app.post('/api/sync-user', async (req, res) => {
   if (!SHOPIFY_ACCESS_TOKEN) await fetchShopifyToken();
 
   try {
-    // 1. On cherche si le client existe déjà
     const search = await axios({
       url: `https://${process.env.SHOPIFY_SHOP_NAME}/admin/api/2024-01/customers/search.json?query=email:${email}`,
       method: 'GET',
@@ -93,7 +90,6 @@ app.post('/api/sync-user', async (req, res) => {
     });
 
     if (search.data.customers.length === 0) {
-      // 2. Création du client si inexistant
       await axios({
         url: `https://${process.env.SHOPIFY_SHOP_NAME}/admin/api/2024-01/customers.json`,
         method: 'POST',
@@ -106,17 +102,15 @@ app.post('/api/sync-user', async (req, res) => {
             first_name: firstName || "Templier",
             email: email,
             verified_email: true,
-            send_email_invite: true // Envoie le mail d'activation Shopify
+            send_email_invite: true 
           }
         }
       });
-      console.log(`✅ Nouveau client synchronisé sur Shopify : ${email}`);
       res.json({ success: true, message: "Client créé sur Shopify" });
     } else {
       res.json({ success: true, message: "Client déjà existant" });
     }
   } catch (error) {
-    console.error("❌ Erreur Sync Shopify:", error.response?.data || error.message);
     res.status(500).json({ error: "Erreur de synchronisation" });
   }
 });
