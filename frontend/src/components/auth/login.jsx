@@ -35,9 +35,9 @@ const handleAuth = async (e) => {
           });
 
           if (response.data.message === "Client créé sur Shopify") {
-            setInfoMessage("Compte créé avec succès ! Un email Shopify vous a été envoyé.");
+            setInfoMessage("Compte créé avec succès ! Un email vous a été envoyé.");
           } else {
-            setInfoMessage("Compte créé ! Votre profil est déjà lié à Shopify.");
+            setInfoMessage("Compte créé ! Votre profil est déjà lié à Shopify, veuillez vous connecter dans le shop.");
           }
         } catch (syncErr) {
           console.error("Erreur synchro:", syncErr);

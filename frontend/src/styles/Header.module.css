@@ -30,6 +30,13 @@
   transform: scale(1.05);
 }
 
+/* Section regroupant Burger et Profil à droite */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -79,47 +86,70 @@
   width: 100%;
 }
 
-.loginButton {
+/* --- PROFIL & DROPDOWN --- */
+
+.profileWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.iconButton {
   background: transparent;
-  color: #ffff;
-  border: 1px solid #ffff;
-  padding: 10px 25px;
-  text-decoration: none;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.loginButton:hover, .activeLogin {
-  background: #ffff;
-  color: black;
-  box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
-}
-
-
-.logoutButton {
-  background: rgba(255, 255, 255, 0.03);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 25px;
+  border: none;
   cursor: pointer;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(5px);
-  font-family: inherit;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  transition: transform 0.2s ease;
 }
 
-.logoutButton:hover {
-  background: rgba(220, 38, 38, 0.15);
-  color: #ffff;
-  border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
-  transform: translateY(-2px);
+.iconButton:hover {
+  transform: scale(1.1);
 }
+
+.dropdownMenu {
+  position: absolute;
+  top: 50px;
+  right: 0; /* Aligné sur le bord droit de l'icône */
+  background-color: #ffffff; /* Fond blanc */
+  padding: 12px;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  z-index: 1100;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.actionBtn {
+  background-color: #e67e00;
+  color: #ffffff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.actionBtn:hover {
+  background-color: #c56c00;
+  box-shadow: 0 4px 10px rgba(230, 126, 0, 0.3);
+}
+
+/* --- BURGER --- */
 
 .burger {
   display: none;
@@ -138,8 +168,13 @@
   transition: 0.3s;
 }
 
+/* --- RESPONSIVE --- */
+
 @media (max-width: 768px) {
-  .burger { display: flex; }
+  .burger {
+    display: flex;
+  }
+
   .nav {
     position: fixed;
     top: 80px;
@@ -150,12 +185,13 @@
     flex-direction: column;
     justify-content: center;
     gap: 30px;
-    padding-top: 0;
     transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .nav.active { right: 0; }
-  
+  .nav.active {
+    right: 0;
+  }
+
   .navLink {
     font-size: 1.2rem;
   }
