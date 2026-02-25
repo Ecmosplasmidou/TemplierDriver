@@ -43,8 +43,6 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerInner}>
-        
-        {/* BURGER (Apparaît à gauche sur mobile via CSS order) */}
         <button 
           className={`${styles.burger} ${menuOpen ? styles.burgerActive : ""}`} 
           onClick={() => setMenuOpen(!menuOpen)}
@@ -54,21 +52,15 @@ const Header = () => {
           <span></span>
           <span></span>
         </button>
-
-        {/* LOGO (Centré sur mobile via CSS) */}
         <NavLink to="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
-          <img src="/images/logo.png" alt="Templier Driver Logo" />
+          <img src="/images/logo.png" alt="Templier Driver" />
         </NavLink>
-
-        {/* NAVIGATION (Centrale sur desktop) */}
         <nav className={`${styles.nav} ${menuOpen ? styles.active : ""}`}>
           <NavLink to="/" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>Accueil</NavLink>
           <NavLink to="/grades" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>Grades</NavLink>
           <a href="https://shop.templierdriver.com" className={styles.navLink} onClick={() => setMenuOpen(false)}>Shop</a>
           <NavLink to="/contact" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>Contact</NavLink>
         </nav>
-
-        {/* PROFIL (À droite sur mobile via CSS order) */}
         <div className={styles.profileWrapper} ref={profileRef}>
           <button 
             className={styles.iconButton} 
