@@ -12,7 +12,6 @@ const Header = () => {
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
-  // Surveillance de l'état de connexion
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -20,7 +19,6 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
 
-  // Fermer le menu profil si on clique ailleurs sur la page
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -45,66 +43,59 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerInner}>
-        {/* LOGO à gauche */}
+        
+        {/* BURGER (Apparaît à gauche sur mobile via CSS order) */}
+        <button 
+          className={`${styles.burger} ${menuOpen ? styles.burgerActive : ""}`} 
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        {/* LOGO (Centré sur mobile via CSS) */}
         <NavLink to="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
           <img src="/images/logo.png" alt="Templier Driver Logo" />
         </NavLink>
 
-        {/* NAVIGATION centrale */}
+        {/* NAVIGATION (Centrale sur desktop) */}
         <nav className={`${styles.nav} ${menuOpen ? styles.active : ""}`}>
-          <NavLink to="/" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>
-            Accueil
-          </NavLink>
-          <NavLink to="/grades" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>
-            Grades
-          </NavLink>
-          <a href="https://shop.templierdriver.com" className={styles.navLink} onClick={() => setMenuOpen(false)}>
-            Shop
-          </a>
-          <NavLink to="/contact" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>
-            Contact
-          </NavLink>
+          <NavLink to="/" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>Accueil</NavLink>
+          <NavLink to="/grades" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>Grades</NavLink>
+          <a href="https://shop.templierdriver.com" className={styles.navLink} onClick={() => setMenuOpen(false)}>Shop</a>
+          <NavLink to="/contact" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink} onClick={() => setMenuOpen(false)}>Contact</NavLink>
         </nav>
 
-        {/* SECTION DROITE (Burger + Profil) */}
-        <div className={styles.rightSection}>
+        {/* PROFIL (À droite sur mobile via CSS order) */}
+        <div className={styles.profileWrapper} ref={profileRef}>
           <button 
-            className={`${styles.burger} ${menuOpen ? styles.burgerActive : ""}`} 
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
+            className={styles.iconButton} 
+            onClick={() => setProfileOpen(!profileOpen)}
+            aria-label="Profil"
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <User color="#ffffff" size={24} />
           </button>
 
-          <div className={styles.profileWrapper} ref={profileRef}>
-            <button 
-              className={styles.iconButton} 
-              onClick={() => setProfileOpen(!profileOpen)}
-              aria-label="Compte utilisateur"
-            >
-              <User color="#ffffff" size={24} />
-            </button>
-
-            {profileOpen && (
-              <div className={styles.dropdownMenu}>
-                {user ? (
-                  <button onClick={handleLogout} className={styles.actionBtn}>
-                    Déconnexion
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => { navigate("/login"); setProfileOpen(false); }} 
-                    className={styles.actionBtn}
-                  >
-                    Se connecter
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+          {profileOpen && (
+            <div className={styles.dropdownMenu}>
+              {user ? (
+                <button onClick={handleLogout} className={styles.actionBtn}>
+                  Déconnexion
+                </button>
+              ) : (
+                <button 
+                  onClick={() => { navigate("/login"); setProfileOpen(false); }} 
+                  className={styles.actionBtn}
+                >
+                  Se connecter
+                </button>
+              )}
+            </div>
+          )}
         </div>
+
       </div>
     </header>
   );

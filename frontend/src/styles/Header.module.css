@@ -18,6 +18,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
+  position: relative;
 }
 
 .logo img {
@@ -30,13 +31,6 @@
   transform: scale(1.05);
 }
 
-/* Section regroupant Burger et Profil à droite */
-.rightSection {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
 .nav {
   display: flex;
   align-items: center;
@@ -44,7 +38,6 @@
 }
 
 .navLink {
-  position: relative;
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   font-size: 0.85rem;
@@ -52,46 +45,33 @@
   letter-spacing: 1.5px;
   transition: color 0.3s ease;
   font-weight: 500;
-  padding: 8px 0;
-  background: none;
-  border: none;
-  cursor: pointer;
+  position: relative;
 }
 
 .navLink::after {
   content: "";
   position: absolute;
-  bottom: 0;
+  bottom: -5px;
   left: 0;
   width: 0;
   height: 2px;
   background-color: #ff8c00;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.3s ease;
 }
 
-.navLink:hover {
+.navLink:hover, .activeLink {
   color: #ff8c00;
 }
 
-.navLink:hover::after {
+.navLink:hover::after, .activeLink::after {
   width: 100%;
 }
-
-.activeLink {
-  color: #ff8c00 !important;
-  font-weight: 700 !important;
-}
-
-.activeLink::after {
-  width: 100%;
-}
-
-/* --- PROFIL & DROPDOWN --- */
 
 .profileWrapper {
   position: relative;
   display: flex;
   align-items: center;
+  z-index: 1001;
 }
 
 .iconButton {
@@ -101,55 +81,38 @@
   display: flex;
   align-items: center;
   padding: 5px;
-  transition: transform 0.2s ease;
-}
-
-.iconButton:hover {
-  transform: scale(1.1);
 }
 
 .dropdownMenu {
   position: absolute;
   top: 50px;
-  right: 0; /* Aligné sur le bord droit de l'icône */
-  background-color: #ffffff; /* Fond blanc */
-  padding: 12px;
+  right: 0;
+  background-color: #ffffff;
+  padding: 10px;
   border-radius: 4px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-  z-index: 1100;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   min-width: 160px;
   display: flex;
   flex-direction: column;
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .actionBtn {
-  background-color: #e67e00;
-  color: #ffffff;
+  background-color: #e67e00; /* Orange */
+  color: #ffffff; /* Texte blanc */
   border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
+  padding: 10px 15px;
+  border-radius: 2px;
   font-weight: 800;
   text-transform: uppercase;
   font-size: 0.7rem;
-  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-  text-align: center;
+  transition: background 0.3s ease;
 }
 
 .actionBtn:hover {
   background-color: #c56c00;
-  box-shadow: 0 4px 10px rgba(230, 126, 0, 0.3);
 }
 
-/* --- BURGER --- */
 
 .burger {
   display: none;
@@ -158,7 +121,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
+  z-index: 1001;
 }
 
 .burger span {
@@ -168,28 +131,44 @@
   transition: 0.3s;
 }
 
-/* --- RESPONSIVE --- */
+/* --- RESPONSIVE MOBILE --- */
 
 @media (max-width: 768px) {
+  .headerInner {
+    padding: 0 20px;
+  }
+
   .burger {
     display: flex;
+    order: 1;
+  }
+
+  .logo {
+    order: 2;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .profileWrapper {
+    order: 3;
   }
 
   .nav {
     position: fixed;
     top: 80px;
-    right: -100%;
+    left: -100%;
     width: 100%;
     height: calc(100vh - 80px);
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.98);
     flex-direction: column;
     justify-content: center;
-    gap: 30px;
-    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 35px;
+    transition: 0.5s ease;
   }
 
   .nav.active {
-    right: 0;
+    left: 0;
   }
 
   .navLink {
